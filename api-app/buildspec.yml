@@ -1,0 +1,43 @@
+version: 0.2
+
+env:
+  shell: bash
+  variables:
+    ENV: "build"
+
+#   You can check test results of Karate from a browser by reverting commented rows. 
+#   If you do this, you need to prepare for S3 bucket that is configured for static website.
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+      java: corretto11
+    commands:
+      - echo "Start install phase"
+      - pip install -r src/requirements.txt
+  pre_build:
+    commands:
+      - echo "Start pre_build phase"
+      - flake8 src/server.py
+      - bandit src/server.py
+      - gunicorn src.server:app -c src/conf/gunicorn_conf.py --daemon
+      - sleep 1
+      - cd $CODEBUILD_SRC_DIR_KARATE_CONFIG
+      # - export RESULT_PAGE=target/surefire-reports/examples.students.students.html
+      - mvn clean test -Dtest=StudentsRunner
+    # finally:
+    #   - aws s3 cp $RESULT_PAGE s3://{FillYourBucketNameForHosting}/index.html
+  build:
+    commands:
+      - echo "Start build phase"
+      - zip -r artifact.zip src
+  post_build:
+    commands:
+      - echo "Start post_build phase"
+      - aws s3 cp artifact.zip s3://{FillYourBucketNameForArtifact}
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: src

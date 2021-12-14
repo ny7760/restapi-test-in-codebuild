@@ -1,0 +1,5 @@
+###### Requirements with Version Specifiers ######`
+flask == 1.1.2
+gunicorn == 20.1.0
+flake8 == 4.0.1
+bandit == 1.7.1

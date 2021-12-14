@@ -1,0 +1,17 @@
+14:08:35.857 karate.env system property was:  
+14:08:36.099 request:
+1 > GET http://127.0.0.1:5000/students
+1 > Accept-Encoding: gzip,deflate
+1 > Connection: Keep-Alive
+1 > Host: 127.0.0.1:5000
+1 > User-Agent: Apache-HttpClient/4.5.11 (Java/11.0.13)
+
+14:08:36.132 response time in milliseconds: 30.33
+1 < 200
+1 < Connection: close
+1 < Content-Length: 17
+1 < Content-Type: text/html; charset=utf-8
+1 < Date: Tue, 14 Dec 2021 05:08:36 GMT
+1 < Server: gunicorn
+{"name": "Alice"}
+
